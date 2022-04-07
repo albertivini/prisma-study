@@ -1,0 +1,37 @@
+# versão do docker-compose
+version: "3.7"
+
+# inicio da orquestração
+services:
+
+  # container do banco de dados
+  # nome do serviço
+  database:
+
+    # imagem do container no dockerhub
+    image: postgres
+
+    # nome do container
+    container_name: prisma
+
+    # política para reiniciar o container sempre que ele for parado
+    restart: always
+
+    # mapeando a porta do container com a do pc 
+    ports:
+      - 5432:5432
+
+    # variáveis de ambiente que serão passadas para o container
+    environment:
+      - POSTGRES_USER=prisma
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=prisma
+
+    # seria o workdir do container, . é a pasta atual : é pra onde os arquivos vão dentro do container
+    volumes:
+      - pgprismadata:/data/postgres
+  ## criando um volume local com as informações do posgres que ficam compartilhadas com o workdir do container
+volumes:
+  pgprismadata:
+    ## caso haja necessidade de passar um caminho externo é possivel utilizar "external: true"
+    driver: local
